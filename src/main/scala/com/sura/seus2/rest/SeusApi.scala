@@ -21,7 +21,7 @@ class SeusApi extends Actor with MyService {
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
   val myRoute =
-    path("seus/user" / user) {
+    path("seus") {
       val seusLoginManager: ActorRef = actorRefFactory.actorOf(Props[SeusLogin], "SeusLogin")
         get {
           parameters('username.as[String], 'password.as[String]) { (username, password) =>
