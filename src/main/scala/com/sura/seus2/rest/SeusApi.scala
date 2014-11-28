@@ -22,13 +22,17 @@ class SeusApi extends Actor with MyService {
 trait MyService extends HttpService {
   val myRoute =
     path("seus") {
-      val seusLoginManager: ActorRef = actorRefFactory.actorOf(Props[SeusLogin], "SeusLogin")
+      	val seusLoginManager: ActorRef = actorRefFactory.actorOf(Props[SeusLogin], "SeusLogin")
 	  post {
-	     
 			  ctx => {
 				  ctx.complete(StatusCodes.OK -> "Me acabaste de hacer un post")
 			  }
-	  } ~ 
+	  } ~   
+	  put {
+	    ctx =>{
+	      ctx.complete(StatusCodes.OK  -> "me hiciste put")
+	    }
+	  } ~
         get {
           parameters('username.as[String], 'password.as[String]) { (username, password) =>
             respondWithMediaType(`text/plain`) { // XML is marshalled to `text/xml` by default, so we simply override here
