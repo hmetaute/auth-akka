@@ -1,4 +1,4 @@
-auth-akka
-=========
+akka-training
+=============
 
-an example auth service with akka spray and scala
+Akka examples for training purposes
