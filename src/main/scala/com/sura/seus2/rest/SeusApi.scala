@@ -21,30 +21,37 @@ class SeusApi extends Actor with MyService {
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
   val myRoute =
-    path("seus") {
-      val seusLoginManager: ActorRef = actorRefFactory.actorOf(Props[SeusLogin], "SeusLogin")
-        get {
-          parameters('username.as[String], 'password.as[String]) { (username, password) =>
-            respondWithMediaType(`text/plain`) { // XML is marshalled to `text/xml` by default, so we simply override here
-              ctx =>
-                {
-                  actorRefFactory.actorOf(Props(new Actor() {
-                    def receive: Receive = {
-                      case LoginSuccessfulMessage(usr, token) => ctx.complete(StatusCodes.OK -> s"token is $token")
-                      case LoginFailedMessage(reason, _) => ctx.complete(StatusCodes.Forbidden  -> s"no se pudo autenticar porque $reason")
-                      case _ =>
-                        ctx.complete(StatusCodes.OK -> "unrecognized message")
-                        context.stop(self)
-                        ()
-                    }
-                    seusLoginManager ! LoginMessage(username, password)
-                  }))
-                  ()
-                }
-
-            }
-          }
-        }
+   // path("seus") {
+      //val seusLoginManager: ActorRef = actorRefFactory.actorOf(Props[SeusLogin], "SeusLogin")
+	  post {
+	     path("seus") {
+			  ctx => {
+				  ctx.complete(StatusCodes.OK -> "Me acabaste de hacer un post")
+			  }
+	     }
+	  }
+//        get {
+//          parameters('username.as[String], 'password.as[String]) { (username, password) =>
+//            respondWithMediaType(`text/plain`) { // XML is marshalled to `text/xml` by default, so we simply override here
+//              ctx =>
+//                {
+//                  actorRefFactory.actorOf(Props(new Actor() {
+//                    def receive: Receive = {
+//                      case LoginSuccessfulMessage(usr, token) => ctx.complete(StatusCodes.OK -> s"token is $token")
+//                      case LoginFailedMessage(reason, _) => ctx.complete(StatusCodes.Forbidden  -> s"no se pudo autenticar porque $reason")
+//                      case _ =>
+//                        ctx.complete(StatusCodes.OK -> "unrecognized message")
+//                        context.stop(self)
+//                        ()
+//                    }
+//                    seusLoginManager ! LoginMessage(username, password)
+//                  }))
+//                  ()
+//                }
+//
+//            }
+//          }
+//        } ~
       
-    }
+  //  }
 }
